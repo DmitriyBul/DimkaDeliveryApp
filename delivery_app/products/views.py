@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 from django.views.generic.base import View
-
+from cart.forms import CartAddProductForm
 from .models import Category, Product
 
 
@@ -22,6 +22,7 @@ class ProductListView(ListView):
 class ProductDetailView(View):
     def get(self, request, ordering='AZ', *args, **kwargs):
         product = get_object_or_404(Product, id=self.kwargs['id'], slug=self.kwargs['slug'], available=True)
+        cart_product_form = CartAddProductForm()
         template_name = 'products/product_detail.html'
-        context = {'product': product}
+        context = {'product': product, 'cart_product_form': cart_product_form}
         return render(request, template_name, context)
