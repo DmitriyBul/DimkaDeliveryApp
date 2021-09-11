@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="db" uuid="c55b8cbf-0164-4233-bc6c-1c199e273e3d">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:H:\DjangoProjects\DimkaDeliveryApp\src\delivery_app\db.sqlite3</jdbc-url>
+    </data-source>
+  </component>
+</project>

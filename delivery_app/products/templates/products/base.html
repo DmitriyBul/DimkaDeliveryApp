@@ -26,8 +26,8 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ml-auto">
             {% if user.is_authenticated %}
-                <li class="nav-item ">
-                    <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+                <li class="nav-item">
+                    Hello {{ request.user }}, <a class="navbar-brand" href="{% url 'accounts:logout' %}">logout</a>
                 </li>
             {% else %}
                 <li class="nav-item ">

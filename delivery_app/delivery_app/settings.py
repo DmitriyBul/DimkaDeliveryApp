@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+from braintree import Configuration, Environment
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'products.apps.ProductsConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
+    'payment.apps.PaymentConfig',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +130,16 @@ STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 LOGIN_REDIRECT_URL = 'products:product_list'
+LOGIN_URL = 'accounts:login'
+LOGOUT_URL = 'accounts:logout'
+# Настройки Braintree.
+BRAINTREE_MERCHANT_ID = 'dsf5cdf6pppq6xf2'  # ID продавца.
+BRAINTREE_PUBLIC_KEY = 'wgtzqhsmrxq8h929'  # Публичный ключ.
+BRAINTREE_PRIVATE_KEY = '80d91bf9beb74a996bb48d5fb50133b4'  # Секретный ключ.
+
+Configuration.configure(
+    Environment.Sandbox,
+    BRAINTREE_MERCHANT_ID,
+    BRAINTREE_PUBLIC_KEY,
+    BRAINTREE_PRIVATE_KEY
+)
