@@ -21,9 +21,10 @@ def order_create(request):
                                          quantity=item['quantity'])
             # Очищаем корзину.
             cart.clear()
-            return render(request,
-                          'orders/order/created.html',
-                          {'order': order})
+            # Сохранение заказа в сессии.
+            request.session['order_id'] = order.id
+            # Перенаправление на страницу оплаты.
+            return redirect(reverse('payment:process'))
     else:
         form = OrderCreateForm()
     return render(request,

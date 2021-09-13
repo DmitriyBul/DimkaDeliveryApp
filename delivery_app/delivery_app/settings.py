@@ -134,11 +134,12 @@ LOGIN_URL = 'accounts:login'
 LOGOUT_URL = 'accounts:logout'
 # Настройки Braintree.
 BRAINTREE_MERCHANT_ID = 'dsf5cdf6pppq6xf2'  # ID продавца.
-BRAINTREE_PUBLIC_KEY = 'wgtzqhsmrxq8h929'  # Публичный ключ.
-BRAINTREE_PRIVATE_KEY = '80d91bf9beb74a996bb48d5fb50133b4'  # Секретный ключ.
+BRAINTREE_PUBLIC_KEY = 'v82nsd57qtp23nz2'  # Публичный ключ.
+BRAINTREE_PRIVATE_KEY = 'a7f5307dd0616a24545a17a5457eb9a4'  # Секретный ключ.
+import braintree
 
-Configuration.configure(
-    Environment.Sandbox,
+BRAINTREE_CONF = braintree.Configuration(
+    braintree.Environment.Sandbox,
     BRAINTREE_MERCHANT_ID,
     BRAINTREE_PUBLIC_KEY,
     BRAINTREE_PRIVATE_KEY

@@ -50,6 +50,10 @@
         <br>
         <div class="row">
             <div class="col-10">
+                <form action="{% url 'products:search_results' %}" method="get">
+                    <input name="q" type="text" >
+                <button type="submit" class="btn btn-primary" style="background-color: #6099f5;" >Search</button>
+                </form>
                 {% block content %}{% endblock %}
             </div>
             <div class="col text-right">
