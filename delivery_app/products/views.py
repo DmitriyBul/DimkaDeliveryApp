@@ -5,7 +5,7 @@ from django.views.generic.base import View
 from cart.forms import CartAddProductForm
 from .forms import CommentForm
 from .models import Category, Product
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 class ProductListView(ListView):
@@ -16,8 +16,12 @@ class ProductListView(ListView):
         if category_slug:
             category = get_object_or_404(Category, slug=category_slug)
             products = products.filter(category=category)
+        lst = Paginator(products, 6)
+        page_number = request.GET.get('page')
+        page_obj = lst.get_page(page_number)
+
         template_name = 'products/product_list.html'
-        context = {'category': category, 'categories': categories, 'products': products}
+        context = {'page_obj': page_obj, 'category': category, 'categories': categories}
         return render(request, template_name, context)
 
 

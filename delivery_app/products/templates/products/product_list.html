@@ -4,26 +4,28 @@
     {% if category %}{{ category.name }}{% else %}Products{% endif %}
 {% endblock %}
 {% block content %}
-
     <div class="row">
         <div class="col">
-            <h3>Categories</h3>
+        <br>
+        <div class="border border-danger rounded">
+            <h3>Категории</h3>
             <ul>
                 <li {% if not category %}class="selected"{% endif %}>
-                    <a href="{% url "products:product_list" %}">All</a>
+                    <a style="color: #000000" href="{% url "products:product_list" %}">Все категории</a>
                 </li>
                 {% for c in categories %}
                     <li {% if category.slug == c.slug %}class="selected" {% endif %}>
-                        <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                        <a style="color: #000000" href="{{ c.get_absolute_url }}">{{ c.name }}</a>
                     </li>
                 {% endfor %}
             </ul>
         </div>
+        </div>
         <div class="col-9">
-            <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+            <h1>{% if category %}{{ category.name }}{% else %}Продукты{% endif %}</h1>
 
             <div class="row col-md-12 text-center">
-                {% for product in products %}
+                {% for product in page_obj %}
 
                     <div class="col-md-4 align-self-end align-center ">
                         <div class="container">
@@ -32,12 +34,13 @@
                                     <img src="
 
 
+
                                             {% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}"
                                          width="130">
                                 </a>
                             </div>
 
-                            <span><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></span>
+                            <span><a style="color: #000000" href="{{ product.get_absolute_url }}">{{ product.name }}</a></span>
                             <br>
                             {{ product.price }} Руб.
                             <p>
@@ -47,10 +50,39 @@
                         </div>
                     </div>
                 {% endfor %}
-                <br>
             </div>
         </div>
 
     </div>
+
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center bg-red">
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <li class="page-item">
+        {% if page_obj.has_previous %}
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            </a>
+        {% endif %}
+    </li>
+    {% for page in page_obj.paginator.page_range %}
+        <li class="page-item {% if page == page_obj.number %} active {% endif %} ">
+            <a class="page-link" href="?page={{page}}">
+                {{ page }}
+            </a>
+        </li>
+    {% endfor %}
+    <li class="page-item">
+        {% if page_obj.has_next %}
+      <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+        {% endif %}
+    </li>
+  </ul>
+</nav>
 
 {% endblock %}

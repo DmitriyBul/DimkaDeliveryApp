@@ -4,9 +4,11 @@
     {{ product.name }}
 {% endblock %}
 {% block content %}
+    <br>
     <div class="row col-md-12 ">
         <div class="col"></div>
         <div class="col-5">
+        <br>
             <img src="{% if product.image %}{{ product.image.url }}{% else %}
 {% static "img/no_image.png" %}{% endif %}" width="300">
         </div>
@@ -14,40 +16,40 @@
             <div class="product-detail">
                 <h3>{{ product.name }}</h3>
                 <h2>
-                    <a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
+                    <a style="color: black" href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
                 </h2>
                 <p class="price">{{ product.price }} Руб.</p>
                 <form action="{% url "cart:cart_add" product.id %}" method="post">
                     {{ cart_product_form }}
                     {% csrf_token %}
-                    <input type="submit" value="Add to cart">
+                    <input type="submit" value="Добавить в корзину" style="background-color: #FF1D3C;">
                 </form>
                 {{ product.description|linebreaks }}
             </div>
         </div>
     </div>
     {% with comments.count as total_comments %}
-        <h2>{{ total_comments }} comment{{ total_comments|pluralize }}</h2>
+        <h2>Комментарии</h2>
     {% endwith %}
     {% for comment in comments %}
         <div class="comment">
             <p class="info">
-                Comment {{ forloop.counter }} by {{ comment.user }}
+                Комментарий пользователя {{ comment.user }}
                 {{ comment.created }}
             </p>
             {{ comment.body|linebreaks }}
         </div>
     {% empty %}
-        <p>There are no comments yet.</p>
+        <p>Комментариев пока нет.</p>
     {% endfor %}
     {% if new_comment %}
-        <h2>Your comment has been added.</h2>
+        <h2>Ваш комментарий был добавлен.</h2>
     {% else %}
-        <h2>Add a new comment</h2>
+        <h2>Добавить новый комментарий</h2>
         <form action="." method="post">
             {{ comment_form.as_p }}
             {% csrf_token %}
-            <p><input type="submit" value="Add comment"></p>
+            <p><input type="submit" value="Добавить комментарий" style="background-color: #FF1D3C;"></p>
         </form>
     {% endif %}
 {% endblock %}

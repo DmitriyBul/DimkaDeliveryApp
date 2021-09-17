@@ -1,19 +1,18 @@
 {% extends "products/base.html" %}
 {% block title %}Log-in{% endblock %}
 {% block content %}
-    <h1>Log-in</h1>
+    <h1>Вход</h1>
     {% if form.errors %}
-        <p>Your username and password didn't match.Please try again.</p>
+        <p>Ваше имя пользователя или пароль не совпадают. Попробуйте снова.</p>
     {% else %}
-        <p>Please, use the following form to log-in. If you don't have an account <a href="{% url "accounts:register" %}">register
-            here</a></p>
+        <p>Пожалуйста, заполните форму, чтобы войти. Если у Вас нет аккаунта, Вы можете <a href="{% url "accounts:register" %}">зарегистрироваться здесь</a></p>
     {% endif %}
     <div class="login-form">
         <form action="{% url 'accounts:login' %}" method="post">
             {{ form.as_p }}
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}"/>
-            <p><input type="submit" value="Log-in"></p>
+            <p><input type="submit" value="Войти"></p>
         </form>
     </div>
 {% endblock %}

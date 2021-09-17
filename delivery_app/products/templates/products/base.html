@@ -14,10 +14,10 @@
     <title>{% block title %}Dimka Delivery{% endblock %}</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light container" style="background-color: #6099f5;">
-
+<nav class="navbar navbar-expand-lg navbar-light container shadow-sm p-3 mb-5 bg-white rounded" style="background-color: #ffffff;">
+&nbsp;&nbsp;&nbsp;&nbsp;
     <a class="navbar-brand" href="{% url 'products:product_list' %}">
-        <img src="{% static "dimkadelivery.png" %}" alt="Logo" width="60">Home
+        <img src="{% static "Logo.png" %}" alt="Logo" width="90">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,17 +27,17 @@
         <ul class="navbar-nav ml-auto">
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    Hello {{ request.user }}, <a class="navbar-brand" href="{% url 'accounts:logout' %}">logout</a>
+                    Здравствуйте, {{ request.user }}! <a  href="{% url 'accounts:logout' %}">Выйти</a>
                 </li>
             {% else %}
                 <li class="nav-item ">
-                    <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+                    <a class="nav-link" href="{% url 'accounts:login' %}">Войти</a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="{% url 'accounts:email_login' %}">Login with Email</a>
+                    <a class="nav-link" href="{% url 'accounts:email_login' %}">Войти при помощи почты</a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="{% url 'accounts:register' %}">Registration</a>
+                    <a class="nav-link" href="{% url 'accounts:register' %}">Регистрация</a>
                 </li>
             {% endif %}
         </ul>
@@ -47,27 +47,40 @@
 
 <div class="container">
     <div id="content">
-        <br>
         <div class="row">
             <div class="col-10">
-                <form action="{% url 'products:search_results' %}" method="get">
-                    <input name="q" type="text" >
-                <button type="submit" class="btn btn-primary" style="background-color: #6099f5;" >Search</button>
+                <form class="form-inline mr-auto" action="{% url 'products:search_results' %}" method="get">
+                    <input name="q" type="text" placeholder="Поиск" aria-label="Search">
+                <button type="submit" class="btn btn-mdb-color btn-rounded btn-sm my-0 ml-sm-2 text-white"  style="background-color: #FF1D3C;" >Найти</button>
                 </form>
                 {% block content %}{% endblock %}
             </div>
             <div class="col text-right">
+            <div class="border border-danger rounded text-center">
                 {% with total_items=cart|length %}
-                    {% if cart|length > 0 %}
-                        Your cart:
-                        <a href="{% url "cart:cart_detail" %}">
-                            {{ total_items }} item{{ total_items|pluralize }},
+                    {% if cart|length > 0 and cart|length < 2%}
+                        Ваша корзина:
+                        <a style="color: black" href="{% url "cart:cart_detail" %}">
+                            {{ total_items }} товар,
                             {{ cart.get_total_price }} Руб.
                         </a>
-                    {% else %}
-                        Your cart is empty.
+                    {% elif cart|length < 5 and cart|length > 1 %}
+                        Ваша корзина:
+                        <a style="color: black" href="{% url "cart:cart_detail" %}">
+                            {{ total_items }} товара,
+                            {{ cart.get_total_price }} Руб.
+                        </a>
+                     {% elif cart|length > 4 %}
+                        Ваша корзина:
+                        <a style="color: black" href="{% url "cart:cart_detail" %}">
+                            {{ total_items }} товаров,
+                            {{ cart.get_total_price }} Руб.
+                        </a>
+                        {% else %}
+                        Ваша корзина пустая.
                     {% endif %}
                 {% endwith %}
+            </div>
             </div>
         </div>
     </div>
