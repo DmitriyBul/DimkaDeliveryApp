@@ -1,8 +1,13 @@
+from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
+
 from products.models import Product
 
 
 class Order(models.Model):
+    user = models.ForeignKey(User, verbose_name='Пользователь',
+                             on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50, null=True)
     email = models.EmailField()
@@ -21,6 +26,9 @@ class Order(models.Model):
 
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())
+
+    def get_absolute_url(self):
+        return reverse('accounts:order_detail', args=[self.id])
 
 
 class OrderItem(models.Model):
