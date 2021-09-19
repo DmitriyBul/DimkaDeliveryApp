@@ -17,6 +17,8 @@ class Order(models.Model):
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
     braintree_id = models.CharField(max_length=150, blank=True)
+    completed = models.BooleanField(default=False)
+    delivering = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('-created',)

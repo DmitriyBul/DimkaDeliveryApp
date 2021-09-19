@@ -1,0 +1,43 @@
+{% extends "products/base.html" %}
+{% load static %}
+{% block title %}
+    {{ order.id }}
+{% endblock %}
+{% block content %}
+    <h1>Информация о заказе номер {{ order.id }}</h1>
+<div class="row ">
+    <div class="col mx-auto my-2">
+        <table class="table table-striped  text-center">
+        <thead>
+        <tr style="color: #FF1D3C;">
+            <th>Продукт</th>
+            <th class=" text-center">Количество</th>
+            <th class=" text-center">Цена за одну шт.</th>
+            <th class=" text-center">Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+                <tr>
+                    <td>
+                        <a style="color: black" href="{{ product.product.get_absolute_url }}">
+                            {{ product.product|truncatechars:50 }}
+                        </a>
+                    </td>
+                    <td class=" text-center">{{ product.quantity }}</td>
+                    <td class=" text-center">{{ product.price }} Руб.</td>
+                    <td class=" text-center">{% widthratio product.price 1 product.quantity  %} Руб.</td>
+                </tr>
+        {% endfor %}
+        <tr style="background-color: #FF1D3C;" class="total">
+            <td>Итого</td>
+            <td colspan="2"></td>
+            <td class="num">{{ total }} Руб.</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+    <a class="btn btn-mdb-color btn-rounded btn-sm my-0 ml-sm-2 text-white"
+                            style="background-color: #FF1D3C;" href="{% url "couriers:take_order" id=order.id%}" role="button">Доставить заказ</a>
+{% endblock %}

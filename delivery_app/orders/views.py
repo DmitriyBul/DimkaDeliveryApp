@@ -12,9 +12,9 @@ def order_create(request):
         if form.is_valid():
             order = form.save(commit=False)
             order.user = request.user
-            order.save()
             order.first_name = request.user.first_name
             order.email = request.user.email
+            order.save()
             for item in cart:
                 OrderItem.objects.create(order=order,
                                          product=item['product'],
@@ -31,3 +31,9 @@ def order_create(request):
     return render(request,
                   'orders/order/create.html',
                   {'cart': cart, 'form': form})
+
+
+def order_created(request):
+    order_id = request.session.get('order_id')
+    return render(request,
+                  'orders/order/created.html', {'order_id': order_id})
