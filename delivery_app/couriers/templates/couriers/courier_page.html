@@ -8,28 +8,34 @@
             <table class="table table-striped  text-center">
                 <tr>
                     <th class=" text-center">Номер заказа</th>
-                    <th class=" text-center">Имя заказчика</th>
-                    <th class=" text-center">Дата создания</th>
-                    <th class=" text-center">Город</th>
-                    <th class=" text-center">Адрес</th>
+                    <th class=" text-center">Статус заказа</th>
                     <th class=" text-center">Оплачен</th>
+                    <th class="text-center">&nbsp;</th>
                 </tr>
                 {% for order in orders %}
                     <tr>
                         <td class=" text-center">
                             <a href="{% url 'couriers:courier_order_detail' id=order.id %}">{{ order.id }}</a>
                         </td>
-                        <td class=" text-center">{{ order.first_name }}</td>
-                        <td class=" text-center">{{ order.created }}</td>
-                        <td class=" text-center">{{ order.city }}</td>
-                        <td class=" text-center">{{ order.address }}</td>
+                        <td class=" text-center">{{ order.status }}</td>
                         {% if order.paid is true %}
                             <td class=" text-center">Да</td>
                         {% else %}
                             <td class=" text-center">Нет</td>
                         {% endif %}
+                    {% if order.status != 'completed' %}
+                        <td class=" text-center">
+                            <a href="{% url 'couriers:change_compl' id=order.id %}">
+                                <button type="submit" class="btn btn-mdb-color btn-rounded  text-white"
+                            style="background-color: #FF1D3C;">Отметить выполненным</button>
+                            </a>
+                        </td>
+                        {% else %}
+                        <td class=" text-center">
+                            &nbsp;
+                        </td>
+                    {% endif %}
                     </tr>
-
                 {% endfor %}
             </table>
         </div>

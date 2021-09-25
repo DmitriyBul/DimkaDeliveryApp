@@ -19,6 +19,12 @@ class Order(models.Model):
     braintree_id = models.CharField(max_length=150, blank=True)
     completed = models.BooleanField(default=False)
     delivering = models.BooleanField(default=False)
+    STATUS_CHOICES = (
+        ('not taken', 'Свободен'),
+        ('completed', 'Завершен'),
+        ('delivering', 'В пути'),
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='not taken')
 
     class Meta:
         ordering = ('-created',)
