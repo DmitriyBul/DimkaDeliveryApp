@@ -1,0 +1,37 @@
+{% extends "administrators/base.html" %}
+{% load static %}
+{% block title %}
+{% endblock %}
+{% block content %}
+    <div class="row">
+    <div class="col">
+    <br>
+    <h1>Категории товаров</h1>
+    <div class="row ">
+        <div class="col mx-auto my-2">
+            <a href="{% url 'administrators:create_product' %}">
+                <button type="submit" class="btn btn-mdb-color btn-rounded  text-white"
+                        style="background-color: #FF1D3C;">Добавить продукт
+                </button>
+            </a>
+        <br>
+        <br>
+            <table class="table table-striped  text-center">
+                <tr>
+                    <th class=" text-center">Категория</th>
+                    <th class=" text-center">Количество товаров</th>
+                </tr>
+                {% for category in categories %}
+                    <tr>
+                        <td class=" text-center">
+                            <a href="{% url 'administrators:products_list' slug=category.slug %}">{{ category.name }}</a>
+                        </td>
+                        <td class=" text-center">{{ category.nprod }}</td>
+                    </tr>
+
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

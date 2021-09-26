@@ -27,7 +27,7 @@ class OrderListView(ListView, LoginRequiredMixin):
         return render(request, template_name, context)
 
 
-class OrderDetailView(View):
+class OrderDetailView(View, LoginRequiredMixin):
     def get(self, request, ordering='AZ', *args, **kwargs):
         order = get_object_or_404(Order, id=self.kwargs['id'])
         products = OrderItem.objects.filter(order=order)

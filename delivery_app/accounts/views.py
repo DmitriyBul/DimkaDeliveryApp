@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
@@ -56,7 +57,7 @@ def email_login(request):
     return render(request, 'account/email_login.html', {'form': form})
 
 
-class OrderListView(ListView):
+class OrderListView(ListView, LoginRequiredMixin):
     def get(self, request, ordering='AZ', *args, **kwargs):
         orders = Order.objects.filter(user=request.user).order_by('-created')
         template_name = 'account/user_page.html'
@@ -64,7 +65,7 @@ class OrderListView(ListView):
         return render(request, template_name, context)
 
 
-class OrderDetailView(View):
+class OrderDetailView(View, LoginRequiredMixin):
     def get(self, request, ordering='AZ', *args, **kwargs):
         order = get_object_or_404(Order, id=self.kwargs['id'])
         if order.user == request.user:

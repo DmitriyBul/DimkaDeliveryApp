@@ -1,0 +1,9 @@
+<div class="row">
+    <div class="col-md-4">
+        <form action="{{action}}" method="post"> {% csrf_token %}
+            {{ form.as_p }}
+        <button type="submit" class="btn btn-mdb-color btn-rounded  text-white"
+                        style="background-color: #FF1D3C;"> {{ button }}</button>
+        </form>
+    </div>
+</div>

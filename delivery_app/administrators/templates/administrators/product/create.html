@@ -1,0 +1,9 @@
+{% extends 'administrators/base.html' %}
+{% block title %}Создание продукта{% endblock %}
+
+{% block content %}
+<h1>Создание продукта</h1>
+
+{% include 'administrators/product/form.html' with button='Сохранить' %}
+
+{% endblock %}
