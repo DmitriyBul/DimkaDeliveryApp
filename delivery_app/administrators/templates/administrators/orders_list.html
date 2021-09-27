@@ -1,0 +1,78 @@
+{% extends "administrators/base.html" %}
+{% load static %}
+{% block title %}
+
+{% endblock %}
+{% block content %}
+    <h1>Список заказов</h1>
+    <div class="row">
+        <div class="col">
+            <table>
+                <thead>
+                <tr style="color: #FF1D3C;">
+                    <th class=" text-center">Номер заказа</th>
+                    <th class=" text-center">Имя заказчика</th>
+                    <th class=" text-center">Дата создания</th>
+                    <th class=" text-center">Оплачен</th>
+                    <th class=" text-center">Статус</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td class=" text-center">
+                            {{ order.id }}
+                        </td>
+                        <td class=" text-center">{{ order.first_name }}</td>
+                        <td class=" text-center">{{ order.created }} </td>
+                        {% if order.paid == True %}
+                            <td class=" text-center">Да</td>
+                        {% else %}
+                            <td class=" text-center">Нет</td>
+                        {% endif %}
+                        {% if order.status == 'completed' %}
+                            <td class=" text-center">Завершен</td>
+                        {% elif order.status == 'delivering' %}
+                            <td class=" text-center">В пути</td>
+                        {% else %}
+                            <td class=" text-center">Не взят</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+
+
+
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center bg-red">
+
+            <li class="page-item">
+                {% if page_obj.has_previous %}
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                {% endif %}
+            </li>
+            {% for page in page_obj.paginator.page_range %}
+                <li class="page-item {% if page == page_obj.number %} active {% endif %} ">
+                    <a class="page-link" href="?page={{ page }}">
+                        {{ page }}
+                    </a>
+                </li>
+            {% endfor %}
+            <li class="page-item">
+                {% if page_obj.has_next %}
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+
+{% endblock %}

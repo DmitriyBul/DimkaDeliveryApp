@@ -1,4 +1,5 @@
 import braintree
+from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from orders.models import Order
@@ -31,6 +32,7 @@ def payment_process(request):
             order.braintree_id = result.transaction.id
             order.save()
             # launch asynchronous task
+            messages.success(request, 'Оплата прошла успешно')
             return redirect('payment:done')
         else:
             return redirect('payment:canceled')

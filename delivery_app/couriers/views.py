@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -16,6 +17,7 @@ class AddOrderToCourierView(View, LoginRequiredMixin):
         CourierOrder.objects.get_or_create(user=request.user, order=order)
         order.status = 'delivering'
         order.save()
+        messages.success(request, 'Заказ успешно закреплен')
         return redirect("/couriers/orders/")
 
 
@@ -57,4 +59,5 @@ class ChangeStatusToCompletedView(View, LoginRequiredMixin):
         order = get_object_or_404(Order, id=self.kwargs['id'])
         order.status = 'completed'
         order.save()
+        messages.success(request, 'Заказ успешно отмечен выполненным')
         return redirect(reverse('couriers:courier_page'))

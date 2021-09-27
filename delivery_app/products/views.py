@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
@@ -6,6 +7,7 @@ from cart.forms import CartAddProductForm
 from .forms import CommentForm
 from .models import Category, Product
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 # Create your views here.
 class ProductListView(ListView):
@@ -19,7 +21,6 @@ class ProductListView(ListView):
         lst = Paginator(products, 6)
         page_number = request.GET.get('page')
         page_obj = lst.get_page(page_number)
-
         template_name = 'products/product_list.html'
         context = {'page_obj': page_obj, 'category': category, 'categories': categories}
         return render(request, template_name, context)
@@ -49,6 +50,7 @@ class ProductDetailView(View):
             new_item.product = product
             # Добавляем пользователя к созданному объекту.
             new_item.save()
+            messages.success(request, 'Комментарий успешно добавлен')
             return redirect("/")
 
 

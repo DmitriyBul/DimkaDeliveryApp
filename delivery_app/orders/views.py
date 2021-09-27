@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from .models import OrderItem
@@ -25,6 +26,7 @@ def order_create(request):
             # Сохранение заказа в сессии.
             request.session['order_id'] = order.id
             # Перенаправление на страницу оплаты.
+            messages.success(request, 'Заказ успешно создан')
             return redirect(reverse('payment:process'))
     else:
         form = OrderCreateForm()

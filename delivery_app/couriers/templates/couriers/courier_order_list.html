@@ -23,7 +23,7 @@
                         <td class=" text-center">{{ order.created }}</td>
                         <td class=" text-center">{{ order.city }}</td>
                         <td class=" text-center">{{ order.address }}</td>
-                        {% if order.paid is true %}
+                        {% if order.paid == True %}
                             <td class=" text-center">Да</td>
                         {% else %}
                             <td class=" text-center">Нет</td>
