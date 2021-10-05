@@ -8,7 +8,7 @@
     <div class="row col-md-12 ">
         <div class="col"></div>
         <div class="col-5">
-        <br>
+            <br>
             <img src="{% if product.image %}{{ product.image.url }}{% else %}
 {% static "img/no_image.png" %}{% endif %}" width="300">
         </div>
@@ -19,11 +19,15 @@
                     <a style="color: black" href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
                 </h2>
                 <p class="price">{{ product.price }} Руб.</p>
+                {% if user.is_authenticated %}
                 <form action="{% url "cart:cart_add" product.id %}" method="post">
                     {{ cart_product_form }}
                     {% csrf_token %}
                     <input type="submit" value="Добавить в корзину" style="background-color: #FF1D3C;">
                 </form>
+                {% else %}
+                Чтобы добавить товар в корзину, необходимо <a href="{% url "accounts:login" %}">войти</a> или <a href="{% url "accounts:register" %}">зарегистрироваться здесь</a>.
+                {% endif %}
                 {{ product.description|linebreaks }}
             </div>
         </div>
@@ -45,11 +49,13 @@
     {% if new_comment %}
         <h2>Ваш комментарий был добавлен.</h2>
     {% else %}
-        <h2>Добавить новый комментарий</h2>
-        <form action="." method="post">
-            {{ comment_form.as_p }}
-            {% csrf_token %}
-            <p><input type="submit" value="Добавить комментарий" style="background-color: #FF1D3C;"></p>
-        </form>
+        {% if user.is_authenticated %}
+            <h2>Добавить новый комментарий</h2>
+            <form action="." method="post">
+                {{ comment_form.as_p }}
+                {% csrf_token %}
+                <p><input type="submit" value="Добавить комментарий" style="background-color: #FF1D3C;"></p>
+            </form>
+        {% endif %}
     {% endif %}
 {% endblock %}

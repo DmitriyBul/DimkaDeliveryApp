@@ -1,12 +1,17 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
+
+from coupons.forms import CouponApplyForm
 from products.models import Product
 from .cart import Cart
 from .forms import CartAddProductForm
 from django.contrib import messages
 
 
+
 @require_POST
+@login_required
 def cart_add(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
@@ -36,4 +41,5 @@ def cart_detail(request):
         item['update_quantity_form'] = CartAddProductForm(
             initial={'quantity': item['quantity'],
                      'update': True})
-    return render(request, 'cart/detail.html', {'cart': cart})
+    coupon_apply_form = CouponApplyForm()
+    return render(request, 'cart/detail.html', {'cart': cart, 'coupon_apply_form': coupon_apply_form})
