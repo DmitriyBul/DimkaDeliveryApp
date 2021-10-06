@@ -25,7 +25,8 @@ CART_SESSION_ID = 'cart'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-0h)_1imk1iid*-#4j30k^q(pg_k+6_qpp5u&$4z)nvh60q)n&^'
-SECRET_KEY = os.environ.get('SECRET_KEY', '!fh_tx#indz_t#+=yzgz2f@ia@-bq22764plu2h!%^b8(k#hmm')
+SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
