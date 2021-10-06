@@ -24,8 +24,8 @@ CART_SESSION_ID = 'cart'
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0h)_1imk1iid*-#4j30k^q(pg_k+6_qpp5u&$4z)nvh60q)n&^'
-
+# SECRET_KEY = 'django-insecure-0h)_1imk1iid*-#4j30k^q(pg_k+6_qpp5u&$4z)nvh60q)n&^'
+SECRET_KEY = os.environ.get('SECRET_KEY', '!fh_tx#indz_t#+=yzgz2f@ia@-bq22764plu2h!%^b8(k#hmm')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -141,7 +141,6 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
@@ -166,3 +165,4 @@ EMAIL_HOST_USER = '128dmitriy128@gmail.com'
 EMAIL_HOST_PASSWORD = 'Gznmltczn3'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
