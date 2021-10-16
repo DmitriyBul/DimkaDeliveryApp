@@ -1,61 +1,80 @@
 {% extends "products/base.html" %}
 {% load static %}
 {% block title %}
-    {{ product.name }}
+{{ product.name }}
 {% endblock %}
 {% block content %}
-    <br>
-    <div class="row col-md-12 ">
-        <div class="col"></div>
-        <div class="col-5">
-            <br>
-            <img src="{% if product.image %}{{ product.image.url }}{% else %}
-{% static "img/no_image.png" %}{% endif %}" width="300">
-        </div>
-        <div class="col-6">
-            <div class="product-detail">
-                <h3>{{ product.name }}</h3>
-                <h2>
-                    <a style="color: black" href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
-                </h2>
-                <p class="price">{{ product.price }} Руб.</p>
-                {% if user.is_authenticated %}
-                <form action="{% url "cart:cart_add" product.id %}" method="post">
-                    {{ cart_product_form }}
-                    {% csrf_token %}
-                    <input type="submit" value="Добавить в корзину" style="background-color: #FF1D3C;">
-                </form>
-                {% else %}
-                Чтобы добавить товар в корзину, необходимо <a href="{% url "accounts:login" %}">войти</a> или <a href="{% url "accounts:register" %}">зарегистрироваться здесь</a>.
-                {% endif %}
-                {{ product.description|linebreaks }}
-            </div>
+<br>
+<div class="row col-md-12 ">
+    <div class="col"></div>
+    <div class="col-5">
+        <br>
+        <img src="{% if product.image %}{{ product.image.url }}{% else %}
+{% static " img/no_image.png" %}{% endif %}" width="300">
+    </div>
+    <div class="col-6">
+        <div class="product-detail">
+            <h3>{{ product.name }}</h3>
+            <h2>
+                <a style="color: black" href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
+            </h2>
+            <p class="price">{{ product.price }} Руб.</p>
+            {% if user.is_authenticated %}
+            <form action="{% url " cart:cart_add
+            " product.id %}" method="post">
+            {{ cart_product_form }}
+            {% csrf_token %}
+            <input type="submit" value="Добавить в корзину" style="background-color: #FF1D3C;">
+            </form>
+            {% else %}
+            Чтобы добавить товар в корзину, необходимо <a href="{% url " accounts:login" %}">войти</a> или <a
+                href="{% url " accounts:register" %}">зарегистрироваться здесь</a>.
+            {% endif %}
+            {{ product.description|linebreaks }}
+
         </div>
     </div>
-    {% with comments.count as total_comments %}
-        <h2>Комментарии</h2>
-    {% endwith %}
-    {% for comment in comments %}
-        <div class="comment">
-            <p class="info">
-                Комментарий пользователя {{ comment.user }}
-                {{ comment.created }}
-            </p>
-            {{ comment.body|linebreaks }}
+    <br>
+    {% if recommended_products %}
+        <div class="recommendations">
+            <h4>Товары, которые покупают с этим продуктом</h4>
+            {% for p in recommended_products %}
+            <div class="item">
+                <a href="{{ p.get_absolute_url }}">
+                    <img src="{% if p.image  %}{{ p.image.url }}{% else %}
+{% static " img/no_image.png" %}{% endif %}" width="150">
+                </a>
+                <p><a href="{{ p.get_absolute_url }}" style="color: #1b1b1b">{{ p.name|truncatechars:20 }}</a></p>
+            </div>
+            {% endfor %}
         </div>
-    {% empty %}
-        <p>Комментариев пока нет.</p>
-    {% endfor %}
-    {% if new_comment %}
-        <h2>Ваш комментарий был добавлен.</h2>
-    {% else %}
-        {% if user.is_authenticated %}
-            <h2>Добавить новый комментарий</h2>
-            <form action="." method="post">
-                {{ comment_form.as_p }}
-                {% csrf_token %}
-                <p><input type="submit" value="Добавить комментарий" style="background-color: #FF1D3C;"></p>
-            </form>
         {% endif %}
-    {% endif %}
+</div>
+
+{% with comments.count as total_comments %}
+<h2>Комментарии</h2>
+{% endwith %}
+{% for comment in comments %}
+<div class="comment">
+    <p class="info">
+        Комментарий пользователя {{ comment.user }}
+        {{ comment.created }}
+    </p>
+    {{ comment.body|linebreaks }}
+</div>
+{% empty %}
+<p>Комментариев пока нет.</p>
+{% endfor %}
+{% if new_comment %}
+<h2>Ваш комментарий был добавлен.</h2>
+{% else %}
+{% if user.is_authenticated %}
+<h2>Добавить новый комментарий</h2>
+<form action="." method="post">
+    {{ comment_form.as_p }}
+    {% csrf_token %}
+    <p><input type="submit" value="Добавить комментарий" style="background-color: #FF1D3C;"></p>
+</form>
+{% endif %}
+{% endif %}
 {% endblock %}

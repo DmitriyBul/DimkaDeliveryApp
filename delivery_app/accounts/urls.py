@@ -3,6 +3,7 @@ from . import views
 from django.contrib.auth import views as auth_views
 from . import views
 
+app_name = 'accounts'
 urlpatterns = [
     path('personalpage/', views.OrderListView.as_view(), name='order_list'),
     path('personalpage/<int:id>/', views.OrderDetailView.as_view(), name='order_detail'),

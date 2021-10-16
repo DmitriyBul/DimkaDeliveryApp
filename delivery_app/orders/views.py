@@ -3,6 +3,9 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
+
+from products.models import Product
+from products.recommender import Recommender
 from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from cart.cart import Cart
@@ -20,8 +23,7 @@ def order_create(request):
             order = form.save(commit=False)
             if cart.coupon:
                 order.coupon = cart.coupon
-            order.discount = cart.coupon.discount
-            order.save()
+                order.discount = cart.coupon.discount
             order.user = request.user
             order.first_name = request.user.first_name
             order.email = request.user.email
@@ -31,6 +33,15 @@ def order_create(request):
                                          product=item['product'],
                                          price=item['price'],
                                          quantity=item['quantity'])
+            r = Recommender()
+            cart_products = [item['product'] for item in cart]
+            main_product = Product.objects.get(name=cart_products[0])
+            print(main_product)
+            print('AAAAA')
+            for object in cart_products[1:]:
+                print(object)
+                # rec_object = Product.objects.get(name=cart_products[object])
+                r.products_bought([main_product, object])
             # Очищаем корзину.
             cart.clear()
             # Сохранение заказа в сессии.

@@ -1,0 +1,75 @@
+{% extends "products/base.html" %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col">
+        <br>
+
+        </div>
+        <div class="col-9">
+
+            <div class="row col-md-12 text-center">
+                {% for product in page_obj %}
+
+                    <div class="col-md-4 align-self-end align-center ">
+                        <div class="container">
+                            <div class="image-container">
+                                <a href="{{ product.get_absolute_url }}">
+                                    <img src="
+
+
+
+                                            {% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}"
+                                         width="130">
+                                </a>
+                            </div>
+
+                            <span><a style="color: #000000" href="{{ product.get_absolute_url }}">{{ product.name }}</a></span>
+                            <br>
+                            {{ product.price }} Руб.
+                            <p>
+                                <br>
+                            </p>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center bg-red">
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <li class="page-item">
+        {% if page_obj.has_previous %}
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            </a>
+        {% endif %}
+    </li>
+    {% for page in page_obj.paginator.page_range %}
+        <li class="page-item {% if page == page_obj.number %} active {% endif %} ">
+            <a class="page-link" href="?page={{page}}">
+                {{ page }}
+            </a>
+        </li>
+    {% endfor %}
+    <li class="page-item">
+        {% if page_obj.has_next %}
+      <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+        {% endif %}
+    </li>
+  </ul>
+</nav>
+
+{% endblock %}
