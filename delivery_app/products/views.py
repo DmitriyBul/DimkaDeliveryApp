@@ -28,29 +28,19 @@ class ProductListView(ListView):
         return render(request, template_name, context)
 
 
-class NewProductListView(ListView):
-    def get(self, request, ordering='AZ', *args, **kwargs):
-        products = Product.objects.filter(available=True).order_by('-created')[:12]
-        lst = Paginator(products, 6)
-        page_number = request.GET.get('page')
-        page_obj = lst.get_page(page_number)
-        template_name = 'products/new_product_list.html'
-        context = {'page_obj': page_obj}
-        return render(request, template_name, context)
 
 
 class ProductDetailView(View):
     def get(self, request, ordering='AZ', *args, **kwargs):
         product = get_object_or_404(Product, id=self.kwargs['id'], slug=self.kwargs['slug'], available=True)
+        r = Recommender()
+        recommended_products = r.suggest_products_for([product], 3)
         cart_product_form = CartAddProductForm()
         comment_form = CommentForm()
         comments = product.comments.filter(active=True)
         template_name = 'products/product_detail.html'
-        r = Recommender()
-        recommended_products = r.suggest_products_for([product], 3)
         context = {'product': product, 'cart_product_form': cart_product_form, 'comments': comments,
-                   'comment_form': comment_form,
-                   'recommended_products': recommended_products}
+                   'comment_form': comment_form, 'recommended_products': recommended_products}
         return render(request, template_name, context)
 
     def post(self, request, ordering='AZ', *args, **kwargs):

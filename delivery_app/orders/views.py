@@ -33,15 +33,12 @@ def order_create(request):
                                          product=item['product'],
                                          price=item['price'],
                                          quantity=item['quantity'])
+
             r = Recommender()
             cart_products = [item['product'] for item in cart]
             main_product = Product.objects.get(name=cart_products[0])
-            print(main_product)
-            print('AAAAA')
-            for object in cart_products[1:]:
-                print(object)
-                # rec_object = Product.objects.get(name=cart_products[object])
-                r.products_bought([main_product, object])
+            for item in cart_products[1:]:
+                r.products_bought([main_product, item])
             # Очищаем корзину.
             cart.clear()
             # Сохранение заказа в сессии.

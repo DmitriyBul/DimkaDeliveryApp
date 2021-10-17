@@ -20,22 +20,24 @@
             </h2>
             <p class="price">{{ product.price }} Руб.</p>
             {% if user.is_authenticated %}
-            <form action="{% url " cart:cart_add
-            " product.id %}" method="post">
+            <form action="{% url "cart:cart_add" product.id %}" method="post">
             {{ cart_product_form }}
             {% csrf_token %}
             <input type="submit" value="Добавить в корзину" style="background-color: #FF1D3C;">
             </form>
             {% else %}
             Чтобы добавить товар в корзину, необходимо <a href="{% url " accounts:login" %}">войти</a> или <a
-                href="{% url " accounts:register" %}">зарегистрироваться здесь</a>.
+                href="{% url "accounts:register" %}">зарегистрироваться здесь</a>.
             {% endif %}
             {{ product.description|linebreaks }}
 
         </div>
     </div>
     <br>
-    {% if recommended_products %}
+
+</div>
+<div class="row col-md-12 ">
+{% if recommended_products %}
         <div class="recommendations">
             <h4>Товары, которые покупают с этим продуктом</h4>
             {% for p in recommended_products %}
@@ -50,7 +52,6 @@
         </div>
         {% endif %}
 </div>
-
 {% with comments.count as total_comments %}
 <h2>Комментарии</h2>
 {% endwith %}
