@@ -23,6 +23,8 @@
 {% if user.is_authenticated %}
     <a style="color: black" href="{% url 'accounts:order_list' %}">Мои заказы </a>
 {% endif %}
+    &nbsp;
+    <a style="color: black" href="{% url 'products:new_product_list' %}">Новинки </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

@@ -28,6 +28,15 @@ class ProductListView(ListView):
         return render(request, template_name, context)
 
 
+class NewProductListView(ListView):
+    def get(self, request, ordering='AZ', *args, **kwargs):
+        products = Product.objects.filter(available=True).order_by('-created')[:12]
+        lst = Paginator(products, 6)
+        page_number = request.GET.get('page')
+        page_obj = lst.get_page(page_number)
+        template_name = 'products/new_product_list.html'
+        context = {'page_obj': page_obj}
+        return render(request, template_name, context)
 
 
 class ProductDetailView(View):

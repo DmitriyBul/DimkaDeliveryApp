@@ -43,11 +43,13 @@
 
                             <span><a style="color: #000000" href="{{ product.get_absolute_url }}">{{ product.name }}</a></span>
                             <br>
-                            {{ product.price }} Руб.
-                            <p>
-                                <br>
-                            </p>
+                            {% if product.sale != 0 %}
+                            Цена со скидкой
+                            {{ product.get_sale|floatformat:2  }}
 
+                            {% else %}
+                            {{ product.price }} Руб.
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

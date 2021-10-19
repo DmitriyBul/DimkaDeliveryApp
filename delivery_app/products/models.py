@@ -31,6 +31,7 @@ class Product(models.Model):
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    sale = models.IntegerField(verbose_name='Скидка в процентах', blank=True, default=0)
 
     class Meta:
         ordering = ('name',)
@@ -41,6 +42,10 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('products:product_detail', args=[self.id, self.slug])
+
+    def get_sale(self):
+        new_price = int(self.price * (100 - self.sale) / 100)
+        return new_price
 
 
 class Comment(models.Model):
