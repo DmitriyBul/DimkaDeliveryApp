@@ -69,9 +69,9 @@ class OrderDetailView(View, LoginRequiredMixin):
     def get(self, request, ordering='AZ', *args, **kwargs):
         order = get_object_or_404(Order, id=self.kwargs['id'])
         if order.user == request.user:
-            products = OrderItem.objects.all()
-            products_price = OrderItem.objects.values_list('price', flat=True)
-            products_quantity = OrderItem.objects.values_list('quantity', flat=True)
+            products = OrderItem.objects.filter(order=order)
+            products_price = OrderItem.objects.filter(order=order).values_list('price', flat=True)
+            products_quantity = OrderItem.objects.filter(order=order).values_list('quantity', flat=True)
             total = 0
             for i in range(len(products_price)):
                 total += float(products_price[i]) * float(products_quantity[i])

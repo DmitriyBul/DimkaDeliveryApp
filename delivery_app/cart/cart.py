@@ -1,4 +1,4 @@
-from decimal import Decimal
+from decimal import Decimal, ROUND_CEILING
 from django.conf import settings
 
 from coupons.models import Coupon
@@ -17,7 +17,7 @@ class Cart(object):
     def add(self, product, quantity=1, update_quantity=False):
         product_id = str(product.id)
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
+            self.cart[product_id] = {'quantity': 0, 'price': str(Decimal(product.price - product.price * Decimal(product.sale / 100)).to_integral_exact(rounding=ROUND_CEILING))}
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
         else:

@@ -25,12 +25,14 @@
         <div class="col-9">
             <h1>{% if category %}{{ category.name }}{% else %}Продукты{% endif %}</h1>
 
-            <div class="row col-md-12 text-center">
+            <div class="row col-md-12 text-center ">
                 {% for product in page_obj %}
 
                     <div class="col-md-4 align-self-end align-center ">
-                        <div class="container">
+                        <div class="border border-danger rounded " style="height: 300px;">
+                        <div class="container align-self-center">
                             <div class="image-container">
+                                <br>
                                 <a href="{{ product.get_absolute_url }}">
                                     <img src="
 
@@ -42,15 +44,18 @@
                             </div>
 
                             <span><a style="color: #000000" href="{{ product.get_absolute_url }}">{{ product.name }}</a></span>
-                            <br>
                             {% if product.sale != 0 %}
-                            Цена со скидкой
-                            {{ product.get_sale|floatformat:2  }}
+                            <br>
+                            <p class="bg-success">Цена со скидкой</p>
+                            {{ product.get_sale|floatformat:2  }} Руб.
 
                             {% else %}
+                            <br>
                             {{ product.price }} Руб.
                             {% endif %}
                         </div>
+                        </div>
+                        <br>
                     </div>
                 {% endfor %}
             </div>
