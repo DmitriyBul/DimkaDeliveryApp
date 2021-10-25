@@ -8,15 +8,31 @@
         <div class="col">
         <br>
 
+        <div class="border border-danger rounded">
+            <h3>&nbsp;Категории</h3>
+            <ul>
+                <li {% if not category %}class="selected"{% endif %}>
+                    <a style="color: #000000" href="{% url "products:product_list" %}">Все категории</a>
+                </li>
+                {% for c in categories %}
+                    <li {% if category.slug == c.slug %}class="selected" {% endif %}>
+                        <a style="color: #000000" href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
         </div>
         <div class="col-9">
+            <h1>{% if category %}{{ category.name }}{% else %}Продукты{% endif %}</h1>
 
-            <div class="row col-md-12 text-center">
+            <div class="row col-md-12 text-center ">
                 {% for product in page_obj %}
 
                     <div class="col-md-4 align-self-end align-center ">
-                        <div class="container">
+                        <div class="border border-danger rounded " style="height: 300px;">
+                        <div class="container align-self-center">
                             <div class="image-container">
+                                <br>
                                 <a href="{{ product.get_absolute_url }}">
                                     <img src="
 
@@ -28,19 +44,25 @@
                             </div>
 
                             <span><a style="color: #000000" href="{{ product.get_absolute_url }}">{{ product.name }}</a></span>
+                            {% if product.sale != 0 %}
+                            <br>
+                            <p class="bg-success border rounded">Цена со скидкой</p>
+                            {{ product.get_sale|floatformat:2  }} Руб.
+
+                            {% else %}
                             <br>
                             {{ product.price }} Руб.
-                            <p>
-                                <br>
-                            </p>
-
+                            {% endif %}
                         </div>
+                        </div>
+                        <br>
                     </div>
                 {% endfor %}
             </div>
         </div>
 
     </div>
+
 
 
 <nav aria-label="Page navigation example">

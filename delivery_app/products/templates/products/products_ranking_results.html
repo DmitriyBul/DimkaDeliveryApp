@@ -1,10 +1,8 @@
 {% extends "products/base.html" %}
 {% load static %}
-{% block title %}
-    {% if category %}{{ category.name }}{% else %}Products{% endif %}
-{% endblock %}
+{% block title %}Products ranking{% endblock %}
 {% block content %}
-    <div class="row">
+<div class="row">
         <div class="col">
         <br>
 
@@ -23,10 +21,10 @@
         </div>
         </div>
         <div class="col-9">
-            <h1>{% if category %}{{ category.name }}{% else %}Продукты{% endif %}</h1>
+            <h1>Самые популярные продукты</h1>
 
             <div class="row col-md-12 text-center ">
-                {% for product in page_obj %}
+                {% for product in most_viewed %}
 
                     <div class="col-md-4 align-self-end align-center ">
                         <div class="border border-danger rounded " style="height: 300px;">
@@ -45,8 +43,10 @@
 
                             <span><a style="color: #000000" href="{{ product.get_absolute_url }}">{{ product.name }}</a></span>
                             {% if product.sale != 0 %}
-                            <div class="bg-success border rounded">Цена со скидкой </div>
+                            <br>
+                            <p class="bg-success border rounded">Цена со скидкой</p>
                             {{ product.get_sale|floatformat:2  }} Руб.
+
                             {% else %}
                             <br>
                             {{ product.price }} Руб.
@@ -60,35 +60,4 @@
         </div>
 
     </div>
-
-
-<nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center bg-red">
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <li class="page-item">
-        {% if page_obj.has_previous %}
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-            </a>
-        {% endif %}
-    </li>
-    {% for page in page_obj.paginator.page_range %}
-        <li class="page-item {% if page == page_obj.number %} active {% endif %} ">
-            <a class="page-link" href="?page={{page}}">
-                {{ page }}
-            </a>
-        </li>
-    {% endfor %}
-    <li class="page-item">
-        {% if page_obj.has_next %}
-      <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-        {% endif %}
-    </li>
-  </ul>
-</nav>
-
 {% endblock %}
