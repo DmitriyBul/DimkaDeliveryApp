@@ -6,6 +6,7 @@ app_name = 'products'
 urlpatterns = [
     path('', lambda req: redirect('/home/')),
     path('home/', views.ProductListView.as_view(), name='product_list'),
+    path('about/', views.AboutView.as_view(), name='about'),
     path('search/', views.SearchResultsView.as_view(), name='search_results'),
     path('new/', views.NewProductListView.as_view(),
          name='new_product_list'),

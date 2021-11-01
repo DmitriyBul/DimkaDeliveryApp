@@ -99,3 +99,8 @@ class ProductsRankingView(ListView):
         template_name = 'products/products_ranking_results.html'
         context = {'most_viewed': most_viewed, 'categories': categories}
         return render(request, template_name, context)
+
+class AboutView(View):
+    def get(self, request, ordering='AZ', *args, **kwargs):
+        template_name = 'products/about.html'
+        return render(request, template_name)
