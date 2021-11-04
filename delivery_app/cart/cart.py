@@ -13,11 +13,14 @@ class Cart(object):
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
         self.coupon_id = self.session.get('coupon_id')
+        self.bonus_scores = self.session.get('bonus_scores')
 
     def add(self, product, quantity=1, update_quantity=False):
         product_id = str(product.id)
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0, 'price': str(Decimal(product.price - product.price * Decimal(product.sale / 100)).to_integral_exact(rounding=ROUND_CEILING))}
+            self.cart[product_id] = {'quantity': 0, 'price': str(
+                Decimal(product.price - product.price * Decimal(product.sale / 100)).to_integral_exact(
+                    rounding=ROUND_CEILING))}
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
         else:

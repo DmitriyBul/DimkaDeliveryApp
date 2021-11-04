@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 
+from accounts.forms import BonusApplyForm
 from cart.recommender import Recommender
 from coupons.forms import CouponApplyForm
 from products.models import Product
@@ -42,5 +43,6 @@ def cart_detail(request):
             initial={'quantity': item['quantity'],
                      'update': True})
     coupon_apply_form = CouponApplyForm()
+    bonus_apply_form = BonusApplyForm()
     return render(request, 'cart/detail.html',
-                  {'cart': cart, 'coupon_apply_form': coupon_apply_form})
+                  {'cart': cart, 'coupon_apply_form': coupon_apply_form, 'bonus_apply_form': bonus_apply_form})

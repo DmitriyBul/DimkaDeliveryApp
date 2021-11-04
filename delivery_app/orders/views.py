@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 
+from accounts.models import Profile
 from products.models import Product
 from products.recommender import Recommender
 from .models import OrderItem, Order
@@ -36,6 +37,14 @@ def order_create(request):
 
             r = Recommender()
             cart_products = [item['product'] for item in cart]
+            print(cart_products)
+            bonus_products = list(Product.objects.filter(name__in=cart_products).values_list('price', flat=True))
+            profile = Profile.objects.get(user=request.user)
+            scores = profile.bonus_scores
+            for item in bonus_products:
+                scores += int(int(item) * 0.03)
+            profile.bonus_scores = scores
+            profile.save()
             main_product = Product.objects.get(name=cart_products[0])
             for item in cart_products[1:]:
                 r.products_bought([main_product, item])

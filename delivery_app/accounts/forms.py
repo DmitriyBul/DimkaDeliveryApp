@@ -25,3 +25,7 @@ class LoginForm(forms.Form):
 class EmailLoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+class BonusApplyForm(forms.Form):
+    bonus_scores = forms.DecimalField()

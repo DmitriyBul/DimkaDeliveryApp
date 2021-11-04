@@ -47,6 +47,10 @@ class Product(models.Model):
         new_price = int(self.price * (100 - self.sale) / 100)
         return new_price
 
+    def get_bonus(self):
+        bonus_price = int(int(self.price) * 0.03)
+        return bonus_price
+
 
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')

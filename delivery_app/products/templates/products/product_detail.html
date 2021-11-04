@@ -19,6 +19,9 @@
                 <a style="color: black" href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
             </h2>
             <p class="price">{{ product.price }} Руб.</p>
+            <div class="col-md-7 text-center">
+            <p class=" border rounded" style="background-color:#FF1D3C; color: white">Бонусные баллы: {{ product.get_bonus }} </p>
+                </div>
             {% if user.is_authenticated %}
             <form action="{% url "cart:cart_add" product.id %}" method="post">
             {{ cart_product_form }}

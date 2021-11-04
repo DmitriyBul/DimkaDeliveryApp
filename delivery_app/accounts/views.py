@@ -1,11 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 from django.views.generic.base import View
 
+from accounts.models import Profile
 from orders.models import Order, OrderItem
-from .forms import LoginForm, UserRegistrationForm, EmailLoginForm
+from .forms import LoginForm, UserRegistrationForm, EmailLoginForm, BonusApplyForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
@@ -59,9 +61,10 @@ def email_login(request):
 
 class OrderListView(ListView, LoginRequiredMixin):
     def get(self, request, ordering='AZ', *args, **kwargs):
+        account = get_object_or_404(Profile, user=request.user)
         orders = Order.objects.filter(user=request.user).order_by('-created')
         template_name = 'account/user_page.html'
-        context = {'orders': orders}
+        context = {'orders': orders, 'account': account}
         return render(request, template_name, context)
 
 
@@ -81,3 +84,16 @@ class OrderDetailView(View, LoginRequiredMixin):
         template_name = 'account/order_detail.html'
         context = {'order': order, 'products': products, 'total': total}
         return render(request, template_name, context)
+
+
+@require_POST
+def bonus_apply(request):
+    form = BonusApplyForm(request.POST)
+    if form.is_valid():
+        bonus_scores = form.cleaned_data['bonus_scores']
+        profile = Profile.objects.get(user=request.user)
+        if bonus_scores <= profile.bonus_scores:
+            request.session['bonus_scores'] = bonus_scores
+            profile.bonus_scores = profile.bonus_scores - bonus_scores
+            profile.save()
+    return redirect('cart:cart_detail')
