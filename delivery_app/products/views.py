@@ -4,6 +4,8 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
 from django.views.generic.base import View
+
+from cart.cart import Cart
 from cart.forms import CartAddProductForm
 from .recommender import Recommender, r
 from .forms import CommentForm, SearchForm
@@ -30,6 +32,8 @@ class ProductListView(ListView):
 
 class NewProductListView(ListView):
     def get(self, request, ordering='AZ', *args, **kwargs):
+        cart = Cart(request)
+        cart.clear()
         categories = Category.objects.all()
         products = Product.objects.filter(available=True).order_by('-created')[:12]
         lst = Paginator(products, 6)

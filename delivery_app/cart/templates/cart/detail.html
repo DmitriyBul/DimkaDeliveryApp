@@ -64,6 +64,14 @@
                 </td>
             </tr>
         {% endif %}
+
+        <tr class="subtotal">
+            <td>Бонусные баллы</td>
+            <td colspan="4"></td>
+            <td class="num">
+                {{ cart.bonus_scores }}
+            </td>
+        </tr>
         <tr class="total">
             <td>Итого</td>
             <td colspan="4"></td>
@@ -74,6 +82,12 @@
 
         </tbody>
     </table>
+<p>Apply a bonus:</p>
+<form action="{% url "accounts:apply_bonus" %}" method="post">
+{{ bonus_apply_form }}
+<input type="submit" value="Apply">
+{% csrf_token %}
+</form>
     <p>Применить купон:</p>
     <form action="{% url "coupons:apply" %}" method="post">
         {{ coupon_apply_form }}

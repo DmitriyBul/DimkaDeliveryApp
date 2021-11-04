@@ -93,7 +93,9 @@ def bonus_apply(request):
         bonus_scores = form.cleaned_data['bonus_scores']
         profile = Profile.objects.get(user=request.user)
         if bonus_scores <= profile.bonus_scores:
-            request.session['bonus_scores'] = bonus_scores
-            profile.bonus_scores = profile.bonus_scores - bonus_scores
+            request.session['bonus_scores'] = int(bonus_scores)
+            # profile.bonus_scores = profile.bonus_scores - bonus_scores
             profile.save()
+        else:
+            request.session['coupon_id'] = None
     return redirect('cart:cart_detail')
