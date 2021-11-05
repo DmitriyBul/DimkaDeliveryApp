@@ -29,6 +29,7 @@ class Order(models.Model):
         ('delivering', 'В пути'),
     )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='not taken')
+    bonus_scores = models.IntegerField(default=0)
     coupon = models.ForeignKey(Coupon,
                                related_name='orders',
                                null=True,
@@ -46,7 +47,7 @@ class Order(models.Model):
 
     def get_total_cost(self):
         total_cost = sum(item.get_cost() for item in self.items.all())
-        return total_cost - total_cost * (self.discount / Decimal('100'))
+        return total_cost - total_cost * (self.discount / Decimal('100')) - Decimal(self.bonus_scores)
 
     def get_absolute_url(self):
         return reverse('accounts:order_detail', args=[self.id])

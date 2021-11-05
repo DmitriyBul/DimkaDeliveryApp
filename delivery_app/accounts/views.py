@@ -81,6 +81,7 @@ class OrderDetailView(View, LoginRequiredMixin):
         else:
             products = []
             total = 0
+        total = total - total * (order.discount / 100) - order.bonus_scores
         template_name = 'account/order_detail.html'
         context = {'order': order, 'products': products, 'total': total}
         return render(request, template_name, context)
@@ -92,10 +93,9 @@ def bonus_apply(request):
     if form.is_valid():
         bonus_scores = form.cleaned_data['bonus_scores']
         profile = Profile.objects.get(user=request.user)
-        if bonus_scores <= profile.bonus_scores:
+        if (bonus_scores <= profile.bonus_scores) and bonus_scores >= 0:
             request.session['bonus_scores'] = int(bonus_scores)
-            # profile.bonus_scores = profile.bonus_scores - bonus_scores
             profile.save()
         else:
-            request.session['coupon_id'] = None
+            request.session['bonus_scores'] = 0
     return redirect('cart:cart_detail')

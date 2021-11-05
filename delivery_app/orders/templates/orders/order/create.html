@@ -19,6 +19,12 @@
                     <span>- {{ cart.get_discount|floatformat:"2" }} Руб.</span>
                 </li>
             {% endif %}
+            <br>
+            {% if cart.bonus_scores > 0 %}
+                <li>
+                    Бонусные рубли: {{ cart.bonus_scores }}
+                </li>
+            {% endif %}
         </ul>
         Всего: {{ cart.get_total_price_after_discount|floatformat:"2" }} Руб.
     </div>

@@ -66,11 +66,13 @@
         {% endif %}
 
         <tr class="subtotal">
+            {% if cart.bonus_scores > 0 %}
             <td>Бонусные баллы</td>
             <td colspan="4"></td>
             <td class="num">
                 {{ cart.bonus_scores }}
             </td>
+            {% endif %}
         </tr>
         <tr class="total">
             <td>Итого</td>

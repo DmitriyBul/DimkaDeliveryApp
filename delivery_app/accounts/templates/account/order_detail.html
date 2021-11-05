@@ -29,6 +29,29 @@
                     <td class=" text-center">{% widthratio product.price 1 product.quantity  %} Руб.</td>
                 </tr>
         {% endfor %}
+        {% if order.coupon %}
+            <tr class="subtotal">
+                <td>Subtotal</td>
+                <td colspan="4"></td>
+            </tr>
+            <tr>
+                <td>
+                    купон {{ order.coupon }} со скидкой
+                    ({{ order.discount }}% )
+                </td>
+                <td colspan="4"></td>
+            </tr>
+        {% endif %}
+
+        <tr class="subtotal">
+            {% if cart.bonus_scores > 0 %}
+            <td>Бонусные баллы</td>
+            <td colspan="2"></td>
+            <td class="num">
+                {{ order.bonus_scores }}
+            </td>
+            {% endif %}
+        </tr>
         <tr style="background-color: #FF1D3C;" class="total">
             <td>Итого</td>
             <td colspan="2"></td>

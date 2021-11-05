@@ -32,8 +32,8 @@ class ProductListView(ListView):
 
 class NewProductListView(ListView):
     def get(self, request, ordering='AZ', *args, **kwargs):
-        cart = Cart(request)
-        cart.clear()
+        # cart = Cart(request)
+        # cart.clear()
         categories = Category.objects.all()
         products = Product.objects.filter(available=True).order_by('-created')[:12]
         lst = Paginator(products, 6)

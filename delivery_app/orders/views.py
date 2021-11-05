@@ -25,6 +25,8 @@ def order_create(request):
             if cart.coupon:
                 order.coupon = cart.coupon
                 order.discount = cart.coupon.discount
+            if cart.bonus_scores > 0:
+                order.bonus_scores = cart.bonus_scores
             order.user = request.user
             order.first_name = request.user.first_name
             order.email = request.user.email
@@ -40,6 +42,12 @@ def order_create(request):
             print(cart_products)
             bonus_products = list(Product.objects.filter(name__in=cart_products).values_list('price', flat=True))
             profile = Profile.objects.get(user=request.user)
+            if profile.bonus_scores < cart.bonus_scores:
+                messages.error(request, 'Некорректное количество бонусных баллов')
+                return redirect(reverse('order:create'))
+            profile.bonus_scores = profile.bonus_scores - cart.bonus_scores
+            if profile.bonus_scores < 0:
+                profile.bonus_scores = 0
             scores = profile.bonus_scores
             for item in bonus_products:
                 scores += int(int(item) * 0.03)
@@ -50,6 +58,8 @@ def order_create(request):
                 r.products_bought([main_product, item])
             # Очищаем корзину.
             cart.clear()
+            request.session['coupon_id'] = None
+            request.session['bonus_scores'] = 0
             # Сохранение заказа в сессии.
             request.session['order_id'] = order.id
             # Перенаправление на страницу оплаты.
